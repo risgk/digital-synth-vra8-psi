@@ -26,9 +26,9 @@ inline uint32_t pgm_read_dword(const void* addr) {
 
 #define TRANSPOSE (0)    // Min: -24, Max: +24
 
-#include "./DigitalSynthVRA8N/common.h"
-#include "./DigitalSynthVRA8N/synth.h"
-#include "./DigitalSynthVRA8N/wav-file-out.h"
+#include "./DigitalSynthVRA8Psi/common.h"
+#include "./DigitalSynthVRA8Psi/synth.h"
+#include "./DigitalSynthVRA8Psi/wav-file-out.h"
 
 const uint16_t RECORDING_SEC = 60;
 const uint16_t SERIAL_SPEED_38400 = 38400;
