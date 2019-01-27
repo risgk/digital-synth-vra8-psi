@@ -1,11 +1,13 @@
-# Digital Synth VRA8-N v1.2.0
+# Digital Synth VRA8-psi vx.x.x
 
-- 2019-01-27 ISGK Instruments
-- <https://github.com/risgk/digital-synth-vra8-n>
+- 2019-xx-xx ISGK Instruments
+- <https://github.com/risgk/digital-synth-vra8-psi>
 
 ## Concept
 
-- Monophonic Synthesizer (MIDI Sound Module) for Arduino Uno
+- Digital Synthesizer (MIDI Sound Module) for Arduino Uno
+
+
 
 ## Change History
 
@@ -82,8 +84,8 @@
 
 ## MIDI Implementation Chart
 
-      [Monophonic Synthesizer]                                        Date: 2019-01-27       
-      Model: Digital Synth VRA8-N     MIDI Implementation Chart       Version: 1.2.0         
+      [Monophonic Synthesizer]                                        Date: 2019-xx-xx       
+      Model: Digital Synth VRA8-N     MIDI Implementation Chart       Version: x.x.x         
     +-------------------------------+---------------+---------------+-----------------------+
     | Function...                   | Transmitted   | Recognized    | Remarks               |
     +-------------------------------+---------------+---------------+-----------------------+
