@@ -1,4 +1,4 @@
-# Digital Synth VRA8-Ψ (psi) vx.x.x
+# Digital Synth VRA8-ψ (psi) vx.x.x
 
 - 2019-xx-xx ISGK Instruments
 - <https://github.com/risgk/digital-synth-vra8-psi>
