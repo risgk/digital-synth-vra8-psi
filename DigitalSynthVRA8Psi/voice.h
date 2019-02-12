@@ -364,7 +364,12 @@ public:
 //    uint8_t env_gen_output_1 = IEnvGen<1>::clock(m_count);
 //    int16_t amp_output = IAmp<0>::clock(filter_output, env_gen_output_1);
 
-    return m_count;
+//    return high_byte(m_count * m_count);
+
+    if (m_count < 128) {
+      return -126;
+    }
+    return +126;
   }
 
 private:

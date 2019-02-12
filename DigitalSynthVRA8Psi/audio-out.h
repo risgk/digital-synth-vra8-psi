@@ -38,7 +38,7 @@ public:
         s_maxCnt = cnt;
       }
       cnt = s_maxCnt;
-#elif 1
+#elif 0
       if (cnt >= 64) {
         cnt = 99;   // Not Over
       }
@@ -55,7 +55,7 @@ public:
     }
     while ((TIFR0 & _BV(TOV0)) == 0);
     TIFR0 = _BV(TOV0);
-    OCR0B = 0x40 - (level >> 1);
+    OCR0B = 0x40 + (level >> 1);
   }
 };
 
