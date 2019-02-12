@@ -366,6 +366,8 @@ public:
 
 //    return high_byte(m_count * m_count);
 
+    return ((m_count >> 4) << 4) - 120;
+
     if (m_count < 128) {
       return -126;
     }

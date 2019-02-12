@@ -16,10 +16,10 @@ public:
     pinMode(SPEAKER_PIN, OUTPUT);
     pinMode(LED_PIN,     OUTPUT);
 
-    // Timer/Counter0 (8-bit Fast PWM)
-    TCCR0A = 0x23;
+    // Timer/Counter0 (8-bit Fast PWM, Inverting, 125 kHz)
+    TCCR0A = 0x33;
     TCCR0B = 0x09;
-    OCR0A  = 0x7f;
+    OCR0A  = 0x7F;
 
     m_count = 0;
   }
@@ -55,7 +55,7 @@ public:
     }
     while ((TIFR0 & _BV(TOV0)) == 0);
     TIFR0 = _BV(TOV0);
-    OCR0B = 0x40 + (level >> 1);
+    OCR0B = 0x3F - (level >> 1);
   }
 };
 
