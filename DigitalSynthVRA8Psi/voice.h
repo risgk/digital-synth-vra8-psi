@@ -397,6 +397,8 @@ public:
     return high_sbyte(output_1);
 #endif
 
+    return m_count - 128;
+
     return ((m_count >> 4) << 4) - 120;
 
     if (m_count < 128) {
