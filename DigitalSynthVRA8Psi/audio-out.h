@@ -10,6 +10,9 @@ class AudioOut {
   static const int LED_PIN     = 13;  // PB5
 
   static uint8_t m_count;
+  static uint8_t m_maxTcnt;
+  static uint8_t m_busy;
+  static uint8_t m_busyCont;
 
 public:
   INLINE static void open() {
@@ -22,41 +25,59 @@ public:
     OCR0A  = 0x7F;
 
     m_count = 0;
+    m_maxTcnt = 0;
+    m_busy = 0;
+    m_busyCont = 0;
   }
 
   INLINE static void write(int8_t level) {
 #if defined(DEBUG)
-    // Output Elapsed Time as Channel Pressure
+    // Output Elapsed Time as Channel Pressure (of Channel 16)
     m_count++;
     if (m_count == 0x7F) {
       UDR0 = 0xDF;
     } else if (m_count == 0xFF) {
-      uint8_t cnt = TCNT0;
 #if 0
-      static uint8_t s_maxCnt = 0;
-      if ((cnt < 64) && (cnt > s_maxCnt)) {
-        s_maxCnt = cnt;
+      uint8_t tcnt = TCNT1 >> 2;
+      if ((tcnt < 64) && (tcnt > m_maxTcnt)) {
+        m_maxTcnt = tcnt;
       }
-      cnt = s_maxCnt;
-#elif 0
-      if (cnt >= 64) {
-        cnt = 99;   // Not Over
+      tcnt = m_maxTcnt;
+#elif 1
+      uint8_t tcnt = m_busyCont;
+      tcnt &= 0x7F;
+#elif 1
+      uint8_t tcnt = TCNT1 >> 2;
+      if (tcnt >= 64) {
+        tcnt = 0;   // Not Over
       }
 #endif
-      UDR0 = cnt;
+      UDR0 = tcnt;
       m_count = 0;
     }
 #endif
-    if (TIFR0 & _BV(TOV0)) {
+    if (TIFR1 & _BV(TOV1)) {
       // CPU BUSY
-      PORTB |= _BV(5);
+      PORTB = _BV(5);
+#if defined(DEBUG)
+      if (m_busy) {
+        m_busyCont++;
+      }
+      m_busy = 1;
+#endif
     } else {
-      PORTB &= ~_BV(5);
+      PORTB = 0x00;
+#if defined(DEBUG)
+      m_busy = 0;
+#endif
+      while ((TIFR1 & _BV(TOV1)) == 0);
     }
-    while ((TIFR0 & _BV(TOV0)) == 0);
-    TIFR0 = _BV(TOV0);
+    TIFR1 = _BV(TOV1);
     OCR0B = 0x3F - (level >> 1);
   }
 };
 
 template <uint8_t T> uint8_t AudioOut<T>::m_count;
+template <uint8_t T> uint8_t AudioOut<T>::m_maxTcnt;
+template <uint8_t T> uint8_t AudioOut<T>::m_busy;
+template <uint8_t T> uint8_t AudioOut<T>::m_busyCont;
