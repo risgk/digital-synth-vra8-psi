@@ -38,7 +38,7 @@ public:
       UDR0 = 0xDF;
     } else if (m_count == 0xFF) {
 #if 0
-      uint8_t tcnt = TCNT1 >> 2;
+      uint8_t tcnt = TCNT0 >> 2;
       if ((tcnt < 64) && (tcnt > m_maxTcnt)) {
         m_maxTcnt = tcnt;
       }
@@ -47,7 +47,7 @@ public:
       uint8_t tcnt = m_busyCont;
       tcnt &= 0x7F;
 #elif 1
-      uint8_t tcnt = TCNT1 >> 2;
+      uint8_t tcnt = TCNT0 >> 2;
       if (tcnt >= 64) {
         tcnt = 0;   // Not Over
       }
@@ -56,7 +56,7 @@ public:
       m_count = 0;
     }
 #endif
-    if (TIFR1 & _BV(TOV1)) {
+    if (TIFR0 & _BV(TOV0)) {
       // CPU BUSY
       PORTB = _BV(5);
 #if defined(DEBUG)
@@ -70,9 +70,9 @@ public:
 #if defined(DEBUG)
       m_busy = 0;
 #endif
-      while ((TIFR1 & _BV(TOV1)) == 0);
+      while ((TIFR0 & _BV(TOV0)) == 0);
     }
-    TIFR1 = _BV(TOV1);
+    TIFR0 = _BV(TOV0);
     OCR0B = 0x3F - (level >> 1);
   }
 };
