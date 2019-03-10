@@ -6,7 +6,7 @@
 
 template <uint8_t T>
 class AudioOut {
-  static const int SPEAKER_PIN = 5;   // PD5 (OC0B)
+  static const int SPEAKER_PIN = 3;   // PD3 (OC2B)
   static const int LED_PIN     = 13;  // PB5
 
   static uint8_t m_count;
@@ -19,10 +19,10 @@ public:
     pinMode(SPEAKER_PIN, OUTPUT);
     pinMode(LED_PIN,     OUTPUT);
 
-    // Timer/Counter0 (8-bit Fast PWM, Inverting, 125 kHz)
-    TCCR0A = 0x33;
-    TCCR0B = 0x09;
-    OCR0A  = 0x7F;
+    // Timer/Counter2 (8-bit Fast PWM, Inverting, 125 kHz)
+    TCCR2A = 0x33;
+    TCCR2B = 0x09;
+    OCR2A  = 0x7F;
 
     m_count = 0;
     m_maxTcnt = 0;
@@ -38,7 +38,7 @@ public:
       UDR0 = 0xDF;
     } else if (m_count == 0xFF) {
 #if 0
-      uint8_t tcnt = TCNT0 >> 2;
+      uint8_t tcnt = TCNT2 >> 2;
       if ((tcnt < 64) && (tcnt > m_maxTcnt)) {
         m_maxTcnt = tcnt;
       }
@@ -47,7 +47,7 @@ public:
       uint8_t tcnt = m_busyCont;
       tcnt &= 0x7F;
 #elif 1
-      uint8_t tcnt = TCNT0 >> 2;
+      uint8_t tcnt = TCNT2 >> 2;
       if (tcnt >= 64) {
         tcnt = 0;   // Not Over
       }
@@ -56,7 +56,7 @@ public:
       m_count = 0;
     }
 #endif
-    if (TIFR0 & _BV(TOV0)) {
+    if (TIFR2 & _BV(TOV2)) {
       // CPU BUSY
       PORTB = _BV(5);
 #if defined(DEBUG)
@@ -70,10 +70,10 @@ public:
 #if defined(DEBUG)
       m_busy = 0;
 #endif
-      while ((TIFR0 & _BV(TOV0)) == 0);
+      while ((TIFR2 & _BV(TOV2)) == 0);
     }
-    TIFR0 = _BV(TOV0);
-    OCR0B = 0x3F - (level >> 1);
+    TIFR2 = _BV(TOV2);
+    OCR2B = 0x3F - (level >> 1);
   }
 };
 
